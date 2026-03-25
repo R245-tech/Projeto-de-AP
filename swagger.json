@@ -23,21 +23,19 @@
   } ],
   "tags" : [ {
     "name" : "Playlist",
-    "description" : "Everything about your Pets",
-    "externalDocs" : {
-      "description" : "Find out more",
-      "url" : "https://swagger.io"
-    }
+    "description" : "Group of songs"
   }, {
     "name" : "User",
-    "description" : "Access to Petstore orders",
-    "externalDocs" : {
-      "description" : "Find out more about our store",
-      "url" : "https://swagger.io"
-    }
+    "description" : "Different type of profilers"
   }, {
     "name" : "Music",
-    "description" : "Operations about user"
+    "description" : "Songs that are inside the Spotify"
+  }, {
+    "name" : "Device",
+    "description" : "Management of login from different devices"
+  }, {
+    "name" : "Subscription",
+    "description" : "Managements of different type of plans"
   } ],
   "paths" : {
     "/Music" : {
@@ -51,17 +49,17 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Pet"
+                "$ref" : "#/components/schemas/Musica"
               }
             },
             "application/xml" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Pet"
+                "$ref" : "#/components/schemas/Musica"
               }
             },
             "application/x-www-form-urlencoded" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Pet"
+                "$ref" : "#/components/schemas/Musica"
               }
             }
           },
@@ -73,12 +71,12 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Pet"
+                  "$ref" : "#/components/schemas/Musica"
                 }
               },
               "application/xml" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Pet"
+                  "$ref" : "#/components/schemas/Musica"
                 }
               }
             }
@@ -1043,8 +1041,8 @@
   },
   "components" : {
     "schemas" : {
-      "Musica" : {
-        "required" : "artist playtime",
+      "musica" : {
+        "required" : "music_id artist playtime data_de_publicação num_likes",
         "type" : "object",
         "properties" : {
           "music_id" : {
@@ -1079,7 +1077,7 @@
           "name" : "order"
         }
       },
-      "Category" : {
+      "Playlist" : {
         "type" : "object",
         "properties" : {
           "id" : {
@@ -1139,7 +1137,7 @@
           "name" : "user"
         }
       },
-      "Tag" : {
+      "Devices" : {
         "type" : "object",
         "properties" : {
           "id" : {
@@ -1154,7 +1152,7 @@
           "name" : "tag"
         }
       },
-      "Pet" : {
+      "Subscription" : {
         "required" : [ "name", "photoUrls" ],
         "type" : "object",
         "properties" : {
