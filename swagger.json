@@ -29,7 +29,7 @@
     "description" : "Tracks subscription plans and billing. Sensitive: Contains financial tier information; restricted access."
   } ],
   "paths" : {
-    "/playlist/{playlist_id}/music/{music_id}" : {
+    "/playlist" : {
       "post" : {
         "tags" : [ "playlist services" ],
         "summary" : "Adicionar música a uma playlist",
@@ -673,12 +673,11 @@
         "required" : [ "code", "message" ],
         "properties" : {
           "code" : {
-            "type" : "integer",
-            "example" : 403
+            "type" : "string"
           },
           "message" : {
             "type" : "string",
-            "example" : "O password está errado"
+            "example" : "O recurso solicitado não existe."
           }
         }
       }
