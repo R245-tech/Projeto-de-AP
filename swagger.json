@@ -45,22 +45,13 @@
           "in" : "path",
           "required" : true,
           "schema" : {
+            "$ref" : null,
             "type" : "string"
           }
         } ],
         "responses" : {
           "200" : {
             "description" : "Música adicionada com sucesso"
-          },
-          "404" : {
-            "description" : "Playlist ou Música não encontrada",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error"
-                }
-              }
-            }
           }
         }
       }
@@ -77,15 +68,6 @@
             "type" : "string"
           }
         } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Playlist"
-              }
-            }
-          }
-        },
         "responses" : {
           "200" : {
             "description" : "Playlist alterada com sucesso"
@@ -136,18 +118,12 @@
             "description" : "Ouvinte adicionado com sucesso"
           }
         }
-      },
+      }
+    },
+    "/playlist/" : {
       "delete" : {
         "tags" : [ "playlist services" ],
         "summary" : "apagar playlist",
-        "parameters" : [ {
-          "name" : "playlist_id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
         "responses" : {
           "200" : {
             "description" : "Playlist apagada com sucesso"
@@ -666,20 +642,6 @@
         },
         "xml" : {
           "name" : "subscription"
-        }
-      },
-      "Error" : {
-        "type" : "object",
-        "required" : [ "code", "message" ],
-        "properties" : {
-          "code" : {
-            "type" : "integer",
-            "example" : 404
-          },
-          "message" : {
-            "type" : "string",
-            "example" : "O recurso solicitado não existe."
-          }
         }
       }
     }
