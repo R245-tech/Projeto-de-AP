@@ -674,11 +674,11 @@
         "properties" : {
           "code" : {
             "type" : "integer",
-            "example" : 403
+            "example" : 404
           },
           "message" : {
             "type" : "string",
-            "example" : "O password está errado"
+            "example" : "O recurso solicitado não existe."
           }
         }
       }
