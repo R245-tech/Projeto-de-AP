@@ -1,3 +1,689 @@
 {
-  "swagger" : "2.0"
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Spotify Mockup API",
+    "description" : "API for managing music, playlists, and user subscriptions.",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/faculdadedeciencia/Rikina/1.0.0"
+  }, {
+    "url" : "https://api.spotify-mockup.io/v1",
+    "description" : "Main Production Server"
+  } ],
+  "tags" : [ {
+    "name" : "playlist services",
+    "description" : "Responsible for all actions surrounding playlists, such as creating and editing metadata. Note: User-generated descriptions are scanned for compliance."
+  }, {
+    "name" : "user services",
+    "description" : "Handles user accounts and personal data. Note: Personal data (email/phone) is encrypted and hidden for privacy."
+  }, {
+    "name" : "music services",
+    "description" : "Stores songs and related data like genre and likes. Publicly accessible metadata."
+  }, {
+    "name" : "device management services",
+    "description" : "Manages devices associated with a user. Private data: Device IDs and locations are only visible to the owner."
+  }, {
+    "name" : "subscription services",
+    "description" : "Tracks subscription plans and billing. Sensitive: Contains financial tier information; restricted access."
+  } ],
+  "paths" : {
+    "/playlist" : {
+      "post" : {
+        "tags" : [ "playlist services" ],
+        "summary" : "Adicionar música a uma playlist",
+        "parameters" : [ {
+          "name" : "playlist_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "music_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Música adicionada com sucesso"
+          },
+          "404" : {
+            "description" : "Playlist ou Música não encontrada",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/playlist/{playlist_id}" : {
+      "put" : {
+        "tags" : [ "playlist services" ],
+        "summary" : "editar metadados(alterar o seu nome, descrição...)",
+        "parameters" : [ {
+          "name" : "playlist_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Playlist"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Playlist alterada com sucesso"
+          }
+        }
+      }
+    },
+    "/playlist/{playlist_id}/user/{user_id}" : {
+      "put" : {
+        "tags" : [ "playlist services" ],
+        "summary" : "adicionar ouvinte",
+        "parameters" : [ {
+          "name" : "playlist_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ouvinte adicionado com sucesso"
+          }
+        }
+      }
+    },
+    "/playlist/{playlist_id}/" : {
+      "post" : {
+        "tags" : [ "playlist services" ],
+        "summary" : "criar playlist",
+        "parameters" : [ {
+          "name" : "playlist_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ouvinte adicionado com sucesso"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "playlist services" ],
+        "summary" : "apagar playlist",
+        "parameters" : [ {
+          "name" : "playlist_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Playlist apagada com sucesso"
+          }
+        }
+      }
+    },
+    "/user/" : {
+      "post" : {
+        "tags" : [ "user services" ],
+        "summary" : "criar novo user",
+        "responses" : {
+          "200" : {
+            "description" : "Nova conta criada com sucesso"
+          }
+        }
+      }
+    },
+    "/user/{user_id}/profile" : {
+      "put" : {
+        "tags" : [ "user services" ],
+        "summary" : "editar informações do perfil",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Perfil editado com sucesso"
+          }
+        }
+      }
+    },
+    "/user/{user_id}/friend/" : {
+      "post" : {
+        "tags" : [ "user services" ],
+        "summary" : "adicionar amigo",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Novo amigo adicionado com sucesso"
+          }
+        }
+      }
+    },
+    "/user/{user_id}" : {
+      "delete" : {
+        "tags" : [ "user services" ],
+        "summary" : "apagar conta",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Conta apagada"
+          }
+        }
+      }
+    },
+    "/user/{user_id}/restriction" : {
+      "put" : {
+        "tags" : [ "user services" ],
+        "summary" : "editar controlo de conteúdo para menores de idade",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Conteúdo restringido"
+          }
+        }
+      }
+    },
+    "/user/{user_id}/friend/{friend_id}/block" : {
+      "put" : {
+        "tags" : [ "user services" ],
+        "summary" : "bloquear user",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "friend_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "User bloqueado. Lamentamos que tenhas tido esta experiência."
+          }
+        }
+      }
+    },
+    "/music" : {
+      "post" : {
+        "tags" : [ "music services" ],
+        "summary" : "publicar música",
+        "responses" : {
+          "200" : {
+            "description" : "Música publicada."
+          }
+        }
+      }
+    },
+    "/music/{music_id}/ratings" : {
+      "get" : {
+        "tags" : [ "music services" ],
+        "summary" : "verificar ratings",
+        "parameters" : [ {
+          "name" : "music_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Retornar ratings da música."
+          }
+        }
+      }
+    },
+    "/music/{music_id}/genero" : {
+      "put" : {
+        "tags" : [ "music services" ],
+        "summary" : "alterar género musical. Privado, exclusivo para o autor da música",
+        "parameters" : [ {
+          "name" : "music_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Género musical alterado."
+          }
+        }
+      }
+    },
+    "/music/{music_id}/{author_id}" : {
+      "get" : {
+        "tags" : [ "music services" ],
+        "summary" : "ver autor",
+        "parameters" : [ {
+          "name" : "music_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "author_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Retornar autor"
+          }
+        }
+      }
+    },
+    "/music/{music_id}/{playlist_id}" : {
+      "get" : {
+        "tags" : [ "music services" ],
+        "summary" : "verificar a que album pertence a musica",
+        "parameters" : [ {
+          "name" : "music_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "playlist_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Retornar album"
+          }
+        }
+      }
+    },
+    "/device/register" : {
+      "post" : {
+        "tags" : [ "device management services" ],
+        "summary" : "registar dispositivo",
+        "responses" : {
+          "200" : {
+            "description" : "Dispositivo registado com sucesso."
+          }
+        }
+      }
+    },
+    "/device/{device_id}" : {
+      "get" : {
+        "tags" : [ "device management services" ],
+        "summary" : "ver dispositivos associados à conta.",
+        "parameters" : [ {
+          "name" : "device_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Retornar dispositivos associados."
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "device management services" ],
+        "summary" : "editar notificações ou localização",
+        "parameters" : [ {
+          "name" : "device_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Configurações do dispositivo alteradas."
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "device management services" ],
+        "summary" : "remover o dispositivo",
+        "parameters" : [ {
+          "name" : "device_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Dispositivo removido com sucesso."
+          }
+        }
+      }
+    },
+    "/subscription/{subscription_id}" : {
+      "get" : {
+        "tags" : [ "subscription services" ],
+        "summary" : "verificar tipo de subscrição.",
+        "parameters" : [ {
+          "name" : "subscription_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Retornar tipo de subscrição."
+          }
+        }
+      }
+    },
+    "/subscription/{subscription_id}/pause" : {
+      "put" : {
+        "tags" : [ "subscription services" ],
+        "summary" : "pôr em pausa subscrição.",
+        "parameters" : [ {
+          "name" : "subscription_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Subscrição pausada."
+          }
+        }
+      }
+    },
+    "/subscription/{subscription_id}/plan" : {
+      "put" : {
+        "tags" : [ "subscription services" ],
+        "summary" : "mudar plano de subscrição.",
+        "parameters" : [ {
+          "name" : "subscription_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Plano alterado."
+          }
+        }
+      }
+    },
+    "/subscription/{subscription_id}/family" : {
+      "get" : {
+        "tags" : [ "subscription services" ],
+        "summary" : "ver membros do agregado.",
+        "parameters" : [ {
+          "name" : "subscription_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Retornar membros."
+          }
+        }
+      }
+    },
+    "/subscription/{subscription_id}/history" : {
+      "get" : {
+        "tags" : [ "subscription services" ],
+        "summary" : "ver histórico da subscrição.",
+        "parameters" : [ {
+          "name" : "subscription_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Retornar histórico."
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    },
+    "schemas" : {
+      "Playlist" : {
+        "type" : "object",
+        "required" : [ "name" ],
+        "properties" : {
+          "playlist_id" : {
+            "type" : "string",
+            "example" : "pl_550"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Treino Pesado"
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Músicas para focar no ginásio."
+          }
+        },
+        "xml" : {
+          "name" : "playlist"
+        }
+      },
+      "Musica" : {
+        "type" : "object",
+        "required" : [ "artist", "playtime", "title" ],
+        "properties" : {
+          "music_id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 10
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "Bohemian Rhapsody"
+          },
+          "playtime" : {
+            "type" : "string",
+            "example" : "3:45"
+          },
+          "artist" : {
+            "type" : "string",
+            "example" : "Queen"
+          },
+          "genero" : {
+            "type" : "string",
+            "example" : "Rock"
+          },
+          "num_likes" : {
+            "type" : "string",
+            "example" : "100K"
+          }
+        },
+        "xml" : {
+          "name" : "musica"
+        }
+      },
+      "User" : {
+        "type" : "object",
+        "required" : [ "username", "email" ],
+        "properties" : {
+          "user_id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 10
+          },
+          "username" : {
+            "type" : "string",
+            "example" : "theUser"
+          },
+          "email" : {
+            "type" : "string",
+            "format" : "email",
+            "example" : "john@email.com"
+          },
+          "password" : {
+            "type" : "string",
+            "format" : "password",
+            "example" : "12345"
+          },
+          "is_minor" : {
+            "type" : "boolean",
+            "example" : false
+          }
+        },
+        "xml" : {
+          "name" : "user"
+        }
+      },
+      "Device" : {
+        "type" : "object",
+        "required" : [ "device_id" ],
+        "properties" : {
+          "device_id" : {
+            "type" : "string",
+            "example" : "phone_01"
+          },
+          "location" : {
+            "type" : "string",
+            "example" : "Lisboa, PT"
+          },
+          "notifications" : {
+            "type" : "boolean",
+            "example" : true
+          }
+        },
+        "xml" : {
+          "name" : "device"
+        }
+      },
+      "Subscription" : {
+        "type" : "object",
+        "required" : [ "subscription_id", "plan_type" ],
+        "properties" : {
+          "subscription_id" : {
+            "type" : "string",
+            "example" : "sub_99"
+          },
+          "plan_type" : {
+            "type" : "string",
+            "enum" : [ "free", "individual", "family", "student" ],
+            "example" : "family"
+          },
+          "status" : {
+            "type" : "string",
+            "example" : "active"
+          }
+        },
+        "xml" : {
+          "name" : "subscription"
+        }
+      },
+      "Error" : {
+        "type" : "object",
+        "required" : [ "code", "message" ],
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string",
+            "example" : "O recurso solicitado não existe."
+          }
+        }
+      }
+    }
+  },
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ]
 }
