@@ -189,27 +189,35 @@
         }
       }
     },
-    "/user/" : {
+    "/user/signup" : {
       "post" : {
         "tags" : [ "user services" ],
-        "summary" : "adicionar amigo",
-        "parameters" : [ {
-          "name" : "user_id",
-          "in" : "path",
+        "summary" : "criar novo user",
+        "security" : [ ],
+        "requestBody" : {
           "required" : true,
-          "schema" : {
-            "type" : "string"
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
           }
-        } ],
+        },
         "responses" : {
           "200" : {
-            "description" : "Novo amigo adicionado com sucesso"
+            "description" : "Nova conta criada com sucesso"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/BadRequest"
           }
         }
-      },
+      }
+    },
+    "/user/{user_id}" : {
       "put" : {
         "tags" : [ "user services" ],
-        "summary" : "bloquear user",
+        "summary" : "editar informações do perfil",
         "parameters" : [ {
           "name" : "user_id",
           "in" : "path",
@@ -217,17 +225,25 @@
           "schema" : {
             "type" : "string"
           }
-        }, {
-          "name" : "friend_id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
         } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
+          }
+        },
         "responses" : {
           "200" : {
-            "description" : "User bloqueado. Lamentamos que tenhas tido esta experiência."
+            "description" : "Perfil editado com sucesso"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/BadRequest"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/ForbiddenError"
           }
         }
       },
@@ -245,9 +261,93 @@
         "responses" : {
           "200" : {
             "description" : "Conta apagada"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/BadRequest"
           }
         }
       }
+    },
+    "/user/{user_id}/friends" : {
+      "post" : {
+        "tags" : [ "user services" ],
+        "summary" : "adicionar amigo",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "friend_id" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Novo amigo adicionado com sucesso"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/BadRequest"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/ForbiddenError"
+          },
+          "408" : {
+            "$ref" : "#/components/responses/TimeoutError"
+          }
+        }
+      }
+    },
+    "/user/{user_id}/block/{target_user_id}" : {
+      "put" : {
+        "tags" : [ "user services" ],
+        "summary" : "editar controlo de conteúdo para menores de idade",
+        "parameters" : [ {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "is_minor" : {
+                    "type" : "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Conteúdo restringido"
+          },
+          "400" : {
+            "$ref" : "#/components/responses/BadRequest"
+          }
+        }
+      },
+      "/user/{user_id}/content-control" : null
     },
     "/music" : {
       "post" : {
